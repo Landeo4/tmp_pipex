@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/20 13:37:54 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:00:14 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ char	*child_process_in(int **pipefd, char **argv, char **env, int i, int argc, i
 	{
 		close(pipefd[1][1]);
 		close(pipefd[0][1]);
-		verif = check_dup(pipefd[0][0], 3, pipefd[i][1]);
+		verif = check_dup(pipefd[0][0], 3, pipefd[1][1]);
+		close(pipefd[0][0]);
+		close(pipefd[1][0]);
 		if (verif == -1)	
 			return (free_pipe_argv(pipefd, argv), NULL);
 	}
@@ -65,7 +67,9 @@ char	*child_process_in(int **pipefd, char **argv, char **env, int i, int argc, i
 	{
 		close(pipefd[0][0]);
 		close(pipefd[1][0]);
-		verif = check_dup(pipefd[1][0], 3, pipefd[i][1]);
+		verif = check_dup(pipefd[1][0], 3, pipefd[0][1]);
+		close(pipefd[1][1]);
+		close(pipefd[0][1]);
 		if (verif == -1)	
 			return (free_pipe_argv(pipefd, argv), NULL);
 	}
