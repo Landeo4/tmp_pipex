@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/20 11:43:31 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/20 13:29:38 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ int	ft_pipex(char *argv[], char *env[], int argc)
 			return (printf("erreur de fork\n"), 1);
 		if (pid[i] == 0)
 		{
-			cmd = child_process_in(pipefd, argv, env, i);
+			if (i % 2 == 0)
+				cmd = child_process_in(pipefd, argv, env, i, argc, 0);
+			else
+				cmd = child_process_in(pipefd, argv, env, i, argc, 1);
 			if (cmd == NULL)
 			{
 				free_pipe_argv(pipefd, argv);

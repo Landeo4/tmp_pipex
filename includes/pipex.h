@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 16:39:00 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/20 12:25:58 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/20 13:34:52 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int		process(char *cmd, char *env[], int token);
 
 int		child_process_middle(int **pipesfd, char **argv, char **env, int i);
 int		child_process_unpair(int **pipesfd, char **argv, char **env, int i);
-char    *child_process_in(int **pipesfd, char **argv, char **env, int i, int argc);
+char    *child_process_in(int **pipesfd, char **argv, char **env, int i, int argc, int token);
 int		child_process_out(int **pipesfd, char **argv, char **env, int i);
 int		**parent_process(int **pipefd, int i);
 int		**alloc_pipe(int i, int **pipefd);
@@ -112,8 +112,9 @@ int		child_process_single(int **pipesfd, char **argv, char **env, int i);
 char	*get_path(char *cmd, char **env);
 char	**arg(char *str);
 void	free_pipe_argv(int **pipefd, char *argv[]);
-int     check_dup(int pipe, char *str, int token);
+int     check_dup(int pipe, int token, int pipe2);
 t_pipes	*init_struct(char *argv[], int argc, char *env[]);
 char    **argv_struct(char *argv[]);
+void	ft_free_pipe(t_pipes	**pipefd);
 
 #endif

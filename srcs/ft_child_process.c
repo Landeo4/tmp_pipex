@@ -6,13 +6,13 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/20 12:36:50 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/20 13:37:54 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	check_dup(int pipe, char *str, int token)
+int	check_dup(int pipe, int token, int pipe2)
 {
 	if (token == 0)
 	{
@@ -25,15 +25,17 @@ int	check_dup(int pipe, char *str, int token)
 			return (printf("problem with dup2"), -1);
 			// return (free(pipesfd[0]), free(pipesfd[1]), free(pipesfd), printf("problem with dup2"), -1);
 	}
-	else
+	if (token == 2)
 	{
-		if (dup2(pipe, str) < 0)
+		if (dup2(pipe, 0) < 0)
+			return (printf("problem with dup2"), -1);
+		if (dup2(pipe2, 1) < 0)
 			return (printf("problem with dup2"), -1);
 	}
 	return (0);
 }
 
-char	*child_process_in(int **pipefd, char **argv, char **env, int i, int argc)
+char	*child_process_in(int **pipefd, char **argv, char **env, int i, int argc, int token)
 {
 	char		*cmd;
 	char		**buf;
@@ -41,35 +43,37 @@ char	*child_process_in(int **pipefd, char **argv, char **env, int i, int argc)
 
 	if (i == 0)
 	{
-		verif = check_dup(0, "STDIN_FILENO", 0);
-		if (verif == -1)
-			return (NULL);
+		verif = check_dup(0, 0, 0);
+		if (verif == -1)	
+			return (free_pipe_argv(pipefd, argv), NULL);
 	}
 	else if (i == argc - 1)
 	{
-		verif = check_dup(0, "STDOUT_FILENO", 1);
-		if (verif == -1)
-			return (NULL);
+		verif = check_dup(0, 1, 0);
+		if (verif == -1)	
+			return (free_pipe_argv(pipefd, argv), NULL);
 	}
-	else
+	if (token == 0)
 	{
-		if (dup2(STDIN_FILENO, STDIN_FILENO) < 0)
-			return (printf("problem with dup2"), -1);
-		if (dup2(pipefd[1][1], STDOUT_FILENO) < 0)
-			return (printf("problem with dup2"), -1);
+		close(pipefd[1][1]);
+		close(pipefd[0][1]);
+		verif = check_dup(pipefd[0][0], 3, pipefd[i][1]);
+		if (verif == -1)	
+			return (free_pipe_argv(pipefd, argv), NULL);
 	}
-	close(pipefd[1][1]);
-	close(pipefd[0][1]);
-	close(pipefd[0][0]);
-	close(pipefd[1][0]);
+	else if (token == 1)
+	{
+		close(pipefd[0][0]);
+		close(pipefd[1][0]);
+		verif = check_dup(pipefd[1][0], 3, pipefd[i][1]);
+		if (verif == -1)	
+			return (free_pipe_argv(pipefd, argv), NULL);
+	}
 	buf = arg(argv[i]);
 	fprintf(stderr, "buf de 0 = %s dans in\n", buf[0]);
 	cmd = ft_do_process(env, buf[0], pipefd, i);
 	if (cmd == NULL)
-	{
-		free_pipe_argv(pipefd, argv);
-		exit(0);
-	}
+		return (free_pipe_argv(pipefd, argv), NULL);
 	free(pipefd[0]);
 	free(pipefd[1]);
 	return (cmd);

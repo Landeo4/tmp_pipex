@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/20 12:23:01 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/20 13:31:37 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char	**new_argv;
 	int		new_argc;
-	// char	**buf;
-	// char	*fre;
+	char	**buf;
+	char	*fre;
 	t_pipes	*pipe;
 
 	(void)argc;
@@ -46,36 +46,29 @@ int	main(int argc, char *argv[], char *envp[])
 	new_argv = NULL;
 	new_argv = get_new_argv(argv);
 	new_argc = found_max(new_argv);
-	// int i = 0;
-	// while (new_argv[i])
-	// {
-	// 	fprintf(stderr, "%s\n", new_argv[i]);
-	// 	buf = arg(new_argv[i]);
-	// 	fre = ft_do_process(envp, buf[0], 0, 0);
-	// 	if (fre != NULL)
-	// 		fprintf(stderr, "success\n");
-	// 	else
-	// 	{
-	// 		ft_freedb_essaie(buf);
-	// 		ft_freedb_essaie(new_argv);
-	// 		return (0);
-	// 	}
-	// 	ft_freedb_essaie(buf);
-	// 	free(fre);
-	// 	i++;
-	// }
-	// pipe = init_struct(new_argv, new_argc, envp);
 	int i = 0;
-	while (argv[i])
+	while (new_argv[i])
 	{
-		printf("%s\n", argv[i]);
+		fprintf(stderr, "%s\n", new_argv[i]);
+		buf = arg(new_argv[i]);
+		fre = ft_do_process(envp, buf[0], 0, 0);
+		if (fre != NULL)
+			fprintf(stderr, "success\n");
+		else
+		{
+			ft_freedb_essaie(buf);
+			ft_freedb_essaie(new_argv);
+			return (0);
+		}
+		ft_freedb_essaie(buf);
+		free(fre);
 		i++;
 	}
 	(void)pipe;
-	ft_freedb_essaie(new_argv);
 	fprintf(stderr, "%d\n========ENTRE DANS LE PROGRAMME PRINCIPAL========\n", new_argc);
 	ft_pipex(new_argv, envp, new_argc);
 	waitpid(-1, NULL, 0);
+	ft_freedb_essaie(new_argv);
 	// ft_freedb_essaie(pipe->argv);
 	// free(pipe);
 	fprintf(stderr, "TOUT EST FINIS\n");

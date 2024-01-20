@@ -6,7 +6,7 @@
 #    By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 16:41:59 by tpotilli          #+#    #+#              #
-#    Updated: 2024/01/20 12:23:34 by tpotilli         ###   ########.fr        #
+#    Updated: 2024/01/20 13:28:07 by tpotilli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,11 @@ NAME	=	Pipex
 OBJS_PATH	= objs/
 
 SRCS	=	srcs/main.c\
-			srcs/init_struct.c\
-			srcs/execute.c\
+			srcs/pipex.c\
 			srcs/ft_child_process.c\
-			srcs/Pipex.c\
+			srcs/execute.c\
 			srcs/ft_create_and_verify.c\
+			srcs/init_struct.c\
 			libft/ft_split.c\
 			libft/ft_strlen.c\
 			libft/ft_strnstr.c\
