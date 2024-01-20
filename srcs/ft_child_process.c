@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/20 15:00:14 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:01:26 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*child_process_in(int **pipefd, char **argv, char **env, int i, int argc, i
 			return (free_pipe_argv(pipefd, argv), NULL);
 	}
 	buf = arg(argv[i]);
-	fprintf(stderr, "buf de 0 = %s dans in\n", buf[0]);
+	fprintf(stderr, "buf de 0 = %s i = %d\n", buf[0], i);
 	cmd = ft_do_process(env, buf[0], pipefd, i);
 	if (cmd == NULL)
 		return (free_pipe_argv(pipefd, argv), NULL);

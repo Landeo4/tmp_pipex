@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/20 14:06:41 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:03:18 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	ft_pipex(char *argv[], char *env[], int argc)
 			{
 				cmd_argument = ft_split(argv[i], ' ');
 				while (cmd_argument[c++])
-					fprintf(stderr, "pour execve cmd_argument = %s dans in\n", cmd_argument[c]);
+					fprintf(stderr, "pour execve cmd_argument = %s i = %d\n", cmd_argument[c], i);
 				execve(cmd, cmd_argument, env);
 			}
 		}
