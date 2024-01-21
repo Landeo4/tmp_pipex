@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/21 14:34:32 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/21 16:15:57 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	ft_pipex(char *argv[], char *env[], int argc)
 					fprintf(stderr, "pour execve cmd_argument = %s i = %d\n", cmd_argument[c], i);
 				fprintf(stderr, "JUSTE AVANT EXEC i = %d\n", i);
 				execve(cmd, cmd_argument, env);
+				fprintf(stderr, "EXEC A ECHOUER i = %d\n", i);
 			}
 		}
 			// return (free(pipefd[0]), free(pipefd[1]), free(pipefd), -1);
