@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/21 16:15:57 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/21 19:02:07 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,10 @@ int	ft_pipex(char *argv[], char *env[], int argc)
 		waitpid(pid[i], NULL, 0);
 		i++;
 	}
+	close(pipefd[0][1]);
+	close(pipefd[0][0]);
+	close(pipefd[1][0]);
+	close(pipefd[1][1]);
 	fprintf(stderr, "=============HELOOOOO TOUT A REUSSIS NORMALEMENT=============\n");
 	free(pipefd[0]);
 	free(pipefd[1]);
