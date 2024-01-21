@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/21 19:10:58 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/21 20:14:06 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	check_dup(int pipe, int token, int pipe2)
 	}
 	return (0);
 }
-
+// regler le probleme des fd
 char	*child_process_in(int **pipefd, char **argv, char **env, int i, int argc, int token)
 {
 	char		*cmd;
