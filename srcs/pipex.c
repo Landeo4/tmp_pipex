@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/20 15:03:18 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/21 14:34:32 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_pipex(char *argv[], char *env[], int argc)
 	char		**cmd_argument;
 	char		*cmd;
 	int			c;
-	
+
 	i = ((c = 0));
 	pipefd = NULL;
 	pipefd = alloc_pipe(i, pipefd);
@@ -73,6 +73,7 @@ int	ft_pipex(char *argv[], char *env[], int argc)
 				cmd_argument = ft_split(argv[i], ' ');
 				while (cmd_argument[c++])
 					fprintf(stderr, "pour execve cmd_argument = %s i = %d\n", cmd_argument[c], i);
+				fprintf(stderr, "JUSTE AVANT EXEC i = %d\n", i);
 				execve(cmd, cmd_argument, env);
 			}
 		}
@@ -120,6 +121,7 @@ int	**parent_process(int **pipefd, int i)
 	// fprintf(stderr, "je suis dans le parent et voici mon i %d\n", i);
 	if (i % 2 == 0)
 	{
+		// close(pipefd[1][1]);
 		if (!pipefd[0] || !pipefd[1])
 			return (free(pipefd[0]), free(pipefd[1]), free(pipefd), NULL);
 		close(pipefd[0][0]);
@@ -128,6 +130,7 @@ int	**parent_process(int **pipefd, int i)
 	}
 	else
 	{
+		// close(pipefd[0][1]);
 		if (!pipefd[0] || !pipefd[1])
 			return (free(pipefd[0]), free(pipefd[1]), free(pipefd), NULL);
 		close(pipefd[1][1]);

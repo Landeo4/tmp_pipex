@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/20 13:31:37 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/21 13:45:17 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	main(int argc, char *argv[], char *envp[])
 	t_pipes	*pipe;
 
 	(void)argc;
-	(void)envp;
 	new_argv = NULL;
 	new_argv = get_new_argv(argv);
 	new_argc = found_max(new_argv);
