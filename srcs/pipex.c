@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/21 19:02:07 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/22 11:19:15 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,14 @@ int	ft_pipex(char *argv[], char *env[], int argc)
 				fprintf(stderr, "JUSTE AVANT EXEC i = %d\n", i);
 				execve(cmd, cmd_argument, env);
 				fprintf(stderr, "EXEC A ECHOUER i = %d\n", i);
+				close(pipefd[0][1]);
+				close(pipefd[0][0]);
+				close(pipefd[1][0]);
+				close(pipefd[1][1]);
+				free(pipefd[0]);
+				free(pipefd[1]);
+				free(pipefd);
+				exit(0);
 			}
 		}
 			// return (free(pipefd[0]), free(pipefd[1]), free(pipefd), -1);
@@ -89,11 +97,11 @@ int	ft_pipex(char *argv[], char *env[], int argc)
 		waitpid(pid[i], NULL, 0);
 		i++;
 	}
+	fprintf(stderr, "=============HELOOOOO TOUT A REUSSIS NORMALEMENT=============\n");
 	close(pipefd[0][1]);
 	close(pipefd[0][0]);
 	close(pipefd[1][0]);
 	close(pipefd[1][1]);
-	fprintf(stderr, "=============HELOOOOO TOUT A REUSSIS NORMALEMENT=============\n");
 	free(pipefd[0]);
 	free(pipefd[1]);
 	free(pipefd);
@@ -123,24 +131,24 @@ int	**alloc_pipe(int i, int **pipefd)
 
 int	**parent_process(int **pipefd, int i)
 {
-	// fprintf(stderr, "je suis dans le parent et voici mon i %d\n", i);
+	fprintf(stderr, "je suis dans le parent et voici mon i %d\n", i);
 	if (i % 2 == 0)
 	{
 		// close(pipefd[1][1]);
 		if (!pipefd[0] || !pipefd[1])
 			return (free(pipefd[0]), free(pipefd[1]), free(pipefd), NULL);
-		close(pipefd[0][0]);
-		close(pipefd[0][1]);
-		pipe(pipefd[0]);
+		close(pipefd[1][1]);
+		close(pipefd[1][0]);
+		pipe(pipefd[1]);
 	}
 	else
 	{
 		// close(pipefd[0][1]);
 		if (!pipefd[0] || !pipefd[1])
 			return (free(pipefd[0]), free(pipefd[1]), free(pipefd), NULL);
-		close(pipefd[1][1]);
-		close(pipefd[1][0]);
-		pipe(pipefd[1]);
+		close(pipefd[0][0]);
+		close(pipefd[0][1]);
+		pipe(pipefd[0]);
 	}
 	// if (!pipefd[1] || !pipefd[0])
 	// 	return (free(pipefd), NULL);

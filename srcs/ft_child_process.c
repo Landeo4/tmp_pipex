@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/21 20:14:06 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/22 11:16:06 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ int	check_dup(int pipe, int token, int pipe2)
 	}
 	else if (token == 1)
 	{
-		// if (dup2(pipe, 0) < 0)
-			// return (printf("problem with dup2 3"), -1);
+		if (dup2(pipe, 0) < 0)
+			return (printf("problem with dup2 3"), -1);
 		if (dup2(STDOUT_FILENO, 1) < 0)
 			return (printf("problem with dup2 4"), -1);
+		// close(pipe);
 			// return (free(pipesfd[0]), free(pipesfd[1]), free(pipesfd), printf("problem with dup2"), -1);
 	}
 	else if (token == 2)
@@ -48,6 +49,9 @@ char	*child_process_in(int **pipefd, char **argv, char **env, int i, int argc, i
 	fprintf(stderr, "DEBUT DE PROCESS IN \nVOICI MA COMMANDE %s i = %d\n", argv[i], i);
 	if (i == 0)
 	{
+		close(pipefd[0][0]);
+		close(pipefd[1][0]);
+		close(pipefd[1][1]);
 		fprintf(stderr, "je passe par entre\n");
 		verif = check_dup(0, 0, pipefd[0][1]);
 		close(pipefd[0][1]);
@@ -58,23 +62,23 @@ char	*child_process_in(int **pipefd, char **argv, char **env, int i, int argc, i
 	}
 	else if (i == argc - 1)
 	{
-		// close(pipefd[1][1]);
-		// close(pipefd[0][1]);
+		close(pipefd[1][1]);
+		close(pipefd[0][1]);
 		if (token == 0)
 			verif = check_dup(pipefd[1][0], 1, 0);
 		else
 			verif = check_dup(pipefd[0][0], 1, 0);
-		fprintf(stderr, "token = %d\n", token);
 		close(pipefd[1][0]);
 		close(pipefd[0][0]);
+		fprintf(stderr, "token = %d\n", token);
 		fprintf(stderr, "mon verif dans out %d et token %d et i %d\n", verif, token, i);
 		if (verif == -1)
 			return (free_pipe_argv(pipefd, argv), NULL);
 	}
 	else if (token == 0)
 	{
-		// close(pipefd[1][1]);
-		// close(pipefd[0][0]);
+		close(pipefd[1][1]);
+		close(pipefd[0][0]);
 		verif = check_dup(pipefd[1][0], 2, pipefd[0][1]);
 		close(pipefd[1][0]);
 		close(pipefd[0][1]);
@@ -84,8 +88,8 @@ char	*child_process_in(int **pipefd, char **argv, char **env, int i, int argc, i
 	else if (token == 1)
 	{
 		fprintf(stderr, "donc je apsse par la??\n");
-		// close(pipefd[0][1]);
-		// close(pipefd[1][0]);
+		close(pipefd[0][1]);
+		close(pipefd[1][0]);
 		verif = check_dup(pipefd[0][0], 2, pipefd[1][1]);
 		close(pipefd[0][0]);
 		close(pipefd[1][1]);
